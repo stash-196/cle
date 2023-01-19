@@ -7,9 +7,10 @@ from cle.cle.layers import StemCell, InitCell
 from cle.cle.utils import tolist
 from cle.cle.utils.op import add_noise
 
-from itertools import izip
+# from itertools import izip
 
-from theano.compat.python2x import OrderedDict
+# from theano.compat.python2x import OrderedDict
+from collections import OrderedDict
 
 
 class RecurrentLayer(StemCell):
@@ -85,7 +86,7 @@ class SimpleRecurrent(RecurrentLayer):
 
         z = T.zeros((X[0].shape[0], self.nout), dtype=theano.config.floatX)
 
-        for x, (parname, parout) in izip(X, self.parent.items()):
+        for x, (parname, parout) in zip(X, self.parent.items()):
             W = tparams['W_'+parname+'__'+self.name]
 
             if x.ndim == 1:
@@ -95,7 +96,7 @@ class SimpleRecurrent(RecurrentLayer):
             else:
                 z += T.dot(x[:, :parout], W)
 
-        for h, (recname, recout) in izip(H, self.recurrent.items()):
+        for h, (recname, recout) in zip(H, self.recurrent.items()):
             U = tparams['U_'+recname+'__'+self.name]
             z += T.dot(h[:, :recout], U)
 
@@ -140,7 +141,7 @@ class LSTM(RecurrentLayer):
         z_t = H[0]
         z = T.zeros((X[0].shape[0], 4*self.nout), dtype=theano.config.floatX)
 
-        for x, (parname, parout) in izip(X, self.parent.items()):
+        for x, (parname, parout) in zip(X, self.parent.items()):
             W = tparams['W_'+parname+'__'+self.name]
 
             if x.ndim == 1:
@@ -150,7 +151,7 @@ class LSTM(RecurrentLayer):
             else:
                 z += T.dot(x[:, :parout], W)
 
-        for h, (recname, recout) in izip(H, self.recurrent.items()):
+        for h, (recname, recout) in zip(H, self.recurrent.items()):
             U = tparams['U_'+recname+'__'+self.name]
             z += T.dot(h[:, :recout], U)
 
@@ -230,7 +231,7 @@ class GFLSTM(LSTM):
         Nm = len(self.recurrent)
         z = T.zeros((X[0].shape[0], 4*self.nout+Nm), dtype=theano.config.floatX)
 
-        for x, (parname, parout) in izip(X, self.parent.items()):
+        for x, (parname, parout) in zip(X, self.parent.items()):
             W = tparams['W_'+parname+'__'+self.name]
 
             if x.ndim == 1:
@@ -240,7 +241,7 @@ class GFLSTM(LSTM):
             else:
                 z += T.dot(x[:, :parout], W)
 
-        for h, (recname, recout) in izip(H, self.recurrent.items()):
+        for h, (recname, recout) in zip(H, self.recurrent.items()):
             U = tparams['U_'+recname+'__'+self.name]
             z = T.inc_subtensor(
                 z[:, self.nout:],
@@ -257,7 +258,7 @@ class GFLSTM(LSTM):
         c_t = z[:, :self.nout]
 
         for i, (h, (recname, recout)) in\
-            enumerate(izip(H, self.recurrent.items())):
+            enumerate(zip(H, self.recurrent.items())):
             gated_h = h[:, :recout] * gron[:, i].dimshuffle(0, 'x')
             U = tparams['U_'+recname+'__'+self.name]
             c_t += T.dot(gated_h, U[:, :self.nout])
@@ -332,7 +333,7 @@ class GRU(RecurrentLayer):
         z_tm1 = H[0]
         z = T.zeros((X[0].shape[0], 3*self.nout), dtype=theano.config.floatX)
 
-        for x, (parname, parout) in izip(X, self.parent.items()):
+        for x, (parname, parout) in zip(X, self.parent.items()):
             W = tparams['W_'+parname+'__'+self.name]
 
             if x.ndim == 1:
@@ -345,7 +346,7 @@ class GRU(RecurrentLayer):
             else:
                 z += T.dot(x[:, :parout], W)
 
-        for h, (recname, recout) in izip(H, self.recurrent.items()):
+        for h, (recname, recout) in zip(H, self.recurrent.items()):
             U = tparams['U_'+recname+'__'+self.name]
             z = T.inc_subtensor(
                 z[:, self.nout:],
@@ -361,7 +362,7 @@ class GRU(RecurrentLayer):
         # Update hidden & cell states
         c_t = T.zeros_like(z_tm1)
 
-        for h, (recname, recout) in izip(H, self.recurrent.items()):
+        for h, (recname, recout) in zip(H, self.recurrent.items()):
             U = tparams['U_'+recname+'__'+self.name]
             c_t += T.dot(h[:, :recout], U[:, :self.nout])
 
@@ -424,7 +425,7 @@ class GRU2(GRU):
         z_tm1 = H[0]
         z = T.zeros((X[0].shape[0], 3*self.nout), dtype=theano.config.floatX)
 
-        for x, (parname, parout) in izip(X, self.parent.items()):
+        for x, (parname, parout) in zip(X, self.parent.items()):
             W = tparams['W_'+parname+'__'+self.name]
 
             if x.ndim == 1:
@@ -434,7 +435,7 @@ class GRU2(GRU):
             else:
                 z += T.dot(x[:, :parout], W)
 
-        for h, (recname, recout) in izip(H, self.recurrent.items()):
+        for h, (recname, recout) in zip(H, self.recurrent.items()):
             U = tparams['U_'+recname+'__'+self.name]
             z = T.inc_subtensor(
                 z[:, self.nout:],
@@ -450,7 +451,7 @@ class GRU2(GRU):
         # Update hidden & cell states
         c_t = T.zeros_like(z_tm1)
 
-        for h, (recname, recout) in izip(H, self.recurrent.items()):
+        for h, (recname, recout) in zip(H, self.recurrent.items()):
             U = tparams['U_'+recname+'__'+self.name]
             c_t += T.dot(r_on * h[:, :recout], U[:, :self.nout])
 
@@ -489,7 +490,7 @@ class GFGRU(GRU):
         Nm = len(self.recurrent)
         z = T.zeros((X[0].shape[0], 3*self.nout+Nm), dtype=theano.config.floatX)
 
-        for x, (parname, parout) in izip(X, self.parent.items()):
+        for x, (parname, parout) in zip(X, self.parent.items()):
             W = tparams['W_'+parname+'__'+self.name]
 
             if x.ndim == 1:
@@ -499,7 +500,7 @@ class GFGRU(GRU):
             else:
                 z += T.dot(x[:, :parout], W)
 
-        for h, (recname, recout) in izip(H, self.recurrent.items()):
+        for h, (recname, recout) in zip(H, self.recurrent.items()):
             U = tparams['U_'+recname+'__'+self.name]
             z = T.inc_subtensor(
                 z[:, self.nout:],
@@ -517,7 +518,7 @@ class GFGRU(GRU):
         c_t = T.zeros_like(z_tm1)
 
         for i, (h, (recname, recout)) in\
-            enumerate(izip(H, self.recurrent.items())):
+            enumerate(zip(H, self.recurrent.items())):
             gated_h = h[:, :recout] * gron[:, i].dimshuffle(0, 'x')
             U = tparams['U_'+recname+'__'+self.name]
             c_t += T.dot(gated_h, U[:, :self.nout])

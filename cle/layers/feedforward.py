@@ -5,9 +5,10 @@ import theano.tensor as T
 
 from cle.cle.layers import StemCell, InitCell
 
-from itertools import izip
+# # from itertools import izip
 
-from theano.compat.python2x import OrderedDict
+# from theano.compat.python2x import OrderedDict
+from collections import OrderedDict
 
 
 class FullyConnectedLayer(StemCell):
@@ -34,7 +35,7 @@ class FullyConnectedLayer(StemCell):
         z_shape = [X[idx].shape[i] for i in xrange(ndim-1)] + [self.nout]
         z = T.zeros(z_shape, dtype=theano.config.floatX)
 
-        for x, (parname, parout) in izip(X, self.parent.items()):
+        for x, (parname, parout) in zip(X, self.parent.items()):
             W = tparams['W_'+parname+'__'+self.name]
 
             if x.ndim == 1:
@@ -212,7 +213,7 @@ class VeryDeepFullyConnectedLayer(StemCell):
         z_shape = [X[idx].shape[i] for i in xrange(ndim-1)] + [self.nout]
         z = T.zeros(z_shape, dtype=theano.config.floatX)
 
-        for x, (parname, parout) in izip(X, self.parent.items()):
+        for x, (parname, parout) in zip(X, self.parent.items()):
             W_name = 'W_' + parname + '__' + self.name + '_h1'
             W = tparams[W_name]
 
@@ -316,7 +317,7 @@ class HighwayNet(StemCell):
         z_shape = [X[idx].shape[i] for i in xrange(ndim-1)] + [self.nout]
         z = T.zeros(z_shape, dtype=theano.config.floatX)
 
-        for x, (parname, parout) in izip(X, self.parent.items()):
+        for x, (parname, parout) in zip(X, self.parent.items()):
             W_name = 'W_' + parname + '__' + self.name + '_h1'
             W = tparams[W_name]
 

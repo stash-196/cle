@@ -5,7 +5,7 @@ import theano.tensor as T
 from cle.cle.layers import InitCell, StemCell
 from cle.cle.layers.feedforward import FullyConnectedLayer
 from cle.cle.layers.recurrent import RecurrentLayer
-from itertools import izip
+# from itertools import izip
 
 
 def batched_dot(A, B):     

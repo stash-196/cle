@@ -8,7 +8,8 @@ from cle.cle.utils import sharedX, tolist, unpack
 from cle.cle.utils.gpu_op import softmax
 from cle.cle.utils.op import add_noise
 
-from theano.compat.python2x import OrderedDict
+# from theano.compat.python2x import OrderedDict
+from collections import OrderedDict
 from theano.sandbox.rng_mrg import MRG_RandomStreams
 
 

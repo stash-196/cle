@@ -5,7 +5,8 @@ import theano.tensor as T
 
 from cle.cle.utils import sharedX
 
-from theano.compat.python2x import OrderedDict
+# from theano.compat.python2x import OrderedDict
+from collections import OrderedDict
 
 
 logger = logging.getLogger(__name__)

@@ -4,7 +4,8 @@ import theano.tensor as T
 
 from cle.cle.utils import predict
 
-from theano.compat.python2x import OrderedDict
+# from theano.compat.python2x import OrderedDict
+from collections import OrderedDict
 from theano.sandbox.rng_mrg import MRG_RandomStreams
 
 
