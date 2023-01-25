@@ -261,7 +261,7 @@ def itemlist(tparams):
 def init_tparams(params):
 
     tparams = OrderedDict()
-    for kk, pp in params.iteritems():
+    for kk, pp in params.items(): # Python 3 renamed dict.iteritems -> dict.items
         tparams[kk] = theano.shared(castX(params[kk]), name=kk)
 
     return tparams

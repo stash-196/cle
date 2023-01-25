@@ -79,14 +79,14 @@ class Iterator(object):
 
     def __iter__(self):
         if self.infinite_data:
-            for i in xrange(self.pseudo_n):
+            for i in range(self.pseudo_n):
                 yield self.data.slices()
         else:
             if self.shuffle:
                 self.data.shuffle()
             start = self.start
             end = self.end - self.end % self.batch_size
-            for idx in xrange(start, end, self.batch_size):
+            for idx in range(start, end, self.batch_size):
                 yield self.data.slices(idx, idx + self.batch_size)
 
 

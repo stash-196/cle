@@ -32,7 +32,7 @@ class FullyConnectedLayer(StemCell):
             idx = np.argmax(ndims)
             ndim = np.maximum(np.array(ndims).max(), 2)
 
-        z_shape = [X[idx].shape[i] for i in xrange(ndim-1)] + [self.nout]
+        z_shape = [X[idx].shape[i] for i in range(ndim-1)] + [self.nout]
         z = T.zeros(z_shape, dtype=theano.config.floatX)
 
         for x, (parname, parout) in zip(X, self.parent.items()):

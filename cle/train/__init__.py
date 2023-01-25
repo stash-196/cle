@@ -70,7 +70,7 @@ class Training(PickleMixin, TheanoMixin):
 
         self.run_extension('ext_regularize_pre_grad')
         self.grads = OrderedDict(zip(self.model.params.values(),
-                                      T.grad(self.cost, self.model.params.values())))
+                                      T.grad(self.cost, list(self.model.params.values())))) #list
         self.run_extension('ext_grad')
         grads = self.optimizer.get_updates(self.grads)
 

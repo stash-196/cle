@@ -192,7 +192,7 @@ class LSTM(RecurrentLayer):
             M = recout
             U = self.init_U.ortho((M, N))
 
-            for j in xrange(3):
+            for j in range(3):
                 U = np.concatenate([U, self.init_U.ortho((M, N))], axis=-1)
 
             U_name = 'U_'+recname+'__'+self.name
